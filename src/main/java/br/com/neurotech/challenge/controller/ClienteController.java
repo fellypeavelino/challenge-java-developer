@@ -5,8 +5,10 @@
 package br.com.neurotech.challenge.controller;
 
 import br.com.neurotech.challenge.entity.NeurotechClient;
+import br.com.neurotech.challenge.entity.VehicleModel;
 import br.com.neurotech.challenge.service.ClientNeurotech;
 import br.com.neurotech.challenge.service.ClientService;
+import br.com.neurotech.challenge.service.CreditServiceNeurotech;
 import ch.qos.logback.core.net.server.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,9 @@ public class ClienteController {
     
     @Autowired
     private ClientNeurotech clienteService;
+    
+    @Autowired
+    private CreditServiceNeurotech creditServiceNeurotech;
 
     @PostMapping
     public ResponseEntity<Void> createCliente(@Valid @RequestBody NeurotechClient cliente) {
@@ -42,20 +47,18 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.get(id.toString()));
     }
 
-    /*@GetMapping("/apto/hatch/{id}")
+    @GetMapping("/apto/hatch/{id}")
     public ResponseEntity<Boolean> checkHatchEligibility(@PathVariable Long id) {
-        NeurotechClient cliente = clienteService.getReferenceById(id);
-        return ResponseEntity.ok(clienteService.isAptoParaHatch(cliente));
+        return ResponseEntity.ok(creditServiceNeurotech.checkCredit(id.toString(), VehicleModel.HATCH));
     }
 
     @GetMapping("/apto/suv/{id}")
     public ResponseEntity<Boolean> checkSuvEligibility(@PathVariable Long id) {
-        NeurotechClient cliente = clienteService.getReferenceById(id);
-        return ResponseEntity.ok(clienteService.isAptoParaSUV(cliente));
+        return ResponseEntity.ok(creditServiceNeurotech.checkCredit(id.toString(), VehicleModel.SUV));
     }
 
     @GetMapping("/fixo-hatch")
     public ResponseEntity<List<NeurotechClient>> getClientesCreditoFixoHatch() {
-        return ResponseEntity.ok(clienteService.findClientesCreditoFixoHatch());
-    }*/
+        return ResponseEntity.ok(creditServiceNeurotech.findClientesCreditoFixoHatch());
+    }
 }
