@@ -10,11 +10,13 @@ import br.com.neurotech.challenge.repository.ClientRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author felly
  */
+@Service
 public class CreditServiceNeurotech implements CreditService{
 
     @Autowired
